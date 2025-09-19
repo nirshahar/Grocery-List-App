@@ -10,6 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import com.example.grocerylist.navigation.AppNavBar
+import com.example.grocerylist.navigation.AppNav
 import com.example.grocerylist.ui.theme.GroceryListTheme
 
 class MainActivity : ComponentActivity() {
@@ -29,7 +31,7 @@ fun MainContent() {
 
     GroceryListTheme {
         Scaffold(bottomBar = { AppNavBar(navController) }) { innerPadding ->
-            AppNavigation(navController, modifier = Modifier.padding(innerPadding))
+            AppNav(navController, modifier = Modifier.padding(innerPadding))
         }
     }
 }

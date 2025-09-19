@@ -1,10 +1,5 @@
-package com.example.grocerylist
+package com.example.grocerylist.navigation
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -12,7 +7,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination.Companion.hasRoute
@@ -21,39 +15,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.grocerylist.checkout.CheckoutScreenPreview
-import com.example.grocerylist.settings.SettingsScreenPreview
-import kotlinx.serialization.Serializable
-
-@Serializable
-sealed interface Destination {
-    @Serializable
-    object Checkout : Destination
-
-    @Serializable
-    object Settings : Destination
-}
-
-data class NavBarItem(
-    val destination: Destination,
-    val unselectedIcon: ImageVector,
-    val selectedIcon: ImageVector,
-    val label: String? = null,
-    val content: @Composable () -> Unit
-)
-
-val BOTTOM_NAVIGATION_DESTINATIONS = listOf(
-    NavBarItem(
-        Destination.Checkout, Icons.Outlined.ShoppingCart, Icons.Filled.ShoppingCart, "Groceries"
-    ) { CheckoutScreenPreview() },
-
-    NavBarItem(
-        Destination.Settings, Icons.Outlined.Settings, Icons.Filled.Settings, "Settings"
-    ) { SettingsScreenPreview() },
-)
 
 @Composable
-fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifier) {
+fun AppNav(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(
         navController = navController, startDestination = Destination.Checkout, modifier = modifier
     ) {
@@ -65,9 +29,9 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
 
 @Composable
 @Preview
-fun AppNavigationPreview() {
+fun AppNavPreview() {
     val navController = rememberNavController()
-    AppNavigation(navController)
+    AppNav(navController)
 }
 
 @Composable
@@ -105,7 +69,7 @@ fun AppNavBar(navController: NavHostController) {
 
 @Composable
 @Preview
-fun GroceryNavBarPreview() {
+fun AppNavBarPreview() {
     val navController = rememberNavController()
     AppNavBar(navController)
 }
