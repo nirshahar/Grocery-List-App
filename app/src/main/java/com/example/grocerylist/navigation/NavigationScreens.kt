@@ -7,7 +7,7 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.example.grocerylist.checkout.CheckoutScreenPreview
+import com.example.grocerylist.checkout.CheckoutScreenHolder
 import com.example.grocerylist.settings.SettingsScreenPreview
 import kotlinx.serialization.Serializable
 
@@ -31,7 +31,7 @@ data class NavBarItem(
 val BOTTOM_NAVIGATION_DESTINATIONS = listOf(
     NavBarItem(
         Destination.Checkout, Icons.Outlined.ShoppingCart, Icons.Filled.ShoppingCart, "Groceries"
-    ) { CheckoutScreenPreview() },
+    ) { CheckoutScreenHolder() },
 
     NavBarItem(
         Destination.Settings, Icons.Outlined.Settings, Icons.Filled.Settings, "Settings"
