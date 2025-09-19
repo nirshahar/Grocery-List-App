@@ -1,5 +1,6 @@
 package com.example.grocerylist.checkout
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastCoerceIn
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
@@ -53,7 +56,13 @@ fun CheckoutScreen(
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            CheckoutProgress()
+            val progress = if (items.isNotEmpty()) {
+                items.count { it.isChecked }.toFloat() / items.size.toFloat()
+            } else {
+                1f
+            }.fastCoerceIn(0f, 1f)
+
+            CheckoutProgress(progress)
             CheckoutItems(items, onItemCheck = onItemCheck)
         }
     }
@@ -77,7 +86,12 @@ fun CheckoutItems(
 }
 
 @Composable
-fun CheckoutProgress(modifier: Modifier = Modifier) {
+fun CheckoutProgress(progress: Float, modifier: Modifier = Modifier) {
+    val animatedProgress by animateFloatAsState(
+        targetValue = progress,
+        animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
+    )
+
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -93,11 +107,17 @@ fun CheckoutProgress(modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxWidth()
         ) {
             LinearProgressIndicator(
-                progress = { 0.5f }, modifier = Modifier
+                progress = { animatedProgress },
+                modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
             )
-            Text("50%", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
+
+            Text(
+                "${(progress * 100).toInt()}%",
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }
@@ -150,5 +170,5 @@ fun CheckoutRowPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun CheckoutProgressPreview() {
-    CheckoutProgress()
+    CheckoutProgress(0.5f)
 }
