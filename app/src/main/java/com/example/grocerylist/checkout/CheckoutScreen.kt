@@ -55,11 +55,9 @@ fun CheckoutScreenPreview() {
 }
 
 @Composable
-@Preview
+@Preview(showBackground = true)
 fun CheckoutRowPreview() {
-    Surface {
-        CheckoutRow(
-        CheckoutItem("Banana", "Yellowish ripe"),
-        )
-    }
+    CheckoutRow(
+    CheckoutItem("Banana", "Yellowish ripe"),
+    )
 }
