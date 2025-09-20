@@ -5,35 +5,43 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.ShoppingCart
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.example.grocerylist.checkout.CheckoutScreenHolder
-import com.example.grocerylist.settings.SettingsScreenPreview
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hasRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed interface Destination {
+sealed interface Route {
     @Serializable
-    object Checkout : Destination
+    object Checkout : Route
 
     @Serializable
-    object Settings : Destination
+    object Settings : Route
+
+    fun matchesNavDestination(navDestination: NavDestination?): Boolean =
+        navDestination?.hasRoute(this::class) ?: false
 }
 
-data class NavBarItem(
-    val destination: Destination,
+enum class BottomNavigationItem(
+    val route: Route,
     val unselectedIcon: ImageVector,
     val selectedIcon: ImageVector,
     val label: String? = null,
-    val content: @Composable () -> Unit
-)
+) {
+    Checkout(
+        Route.Checkout,
+        Icons.Outlined.ShoppingCart,
+        Icons.Filled.ShoppingCart,
+        "Groceries"
+    ),
 
-val BOTTOM_NAVIGATION_DESTINATIONS = listOf(
-    NavBarItem(
-        Destination.Checkout, Icons.Outlined.ShoppingCart, Icons.Filled.ShoppingCart, "Groceries"
-    ) { CheckoutScreenHolder() },
+    Settings(
+        Route.Settings,
+        Icons.Outlined.Settings,
+        Icons.Filled.Settings,
+        "Settings"
+    );
 
-    NavBarItem(
-        Destination.Settings, Icons.Outlined.Settings, Icons.Filled.Settings, "Settings"
-    ) { SettingsScreenPreview() },
-)
+    fun matchesNavDestination(navDestination: NavDestination?): Boolean =
+        route.matchesNavDestination(navDestination)
+}

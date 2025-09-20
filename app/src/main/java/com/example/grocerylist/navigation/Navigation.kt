@@ -9,20 +9,32 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.grocerylist.checkout.CheckoutScreenHolder
+import com.example.grocerylist.checkout.CheckoutViewModel
+import com.example.grocerylist.settings.SettingsScreenPreview
 
 @Composable
-fun AppNav(navController: NavHostController, modifier: Modifier = Modifier) {
+fun AppNav(navController: NavHostController, modifier: Modifier = Modifier, checkoutViewModel: CheckoutViewModel = viewModel()) {
     NavHost(
-        navController = navController, startDestination = Destination.Checkout, modifier = modifier
+        navController = navController, startDestination = Route.Checkout, modifier = modifier
     ) {
-        BOTTOM_NAVIGATION_DESTINATIONS.forEach { item ->
-            composable(item.destination::class) { item.content() }
+        BottomNavigationItem.entries.forEach { item ->
+            composable(item.route::class) {
+                when (item) {
+                    BottomNavigationItem.Checkout -> {
+                        CheckoutScreenHolder(viewModel = checkoutViewModel)
+                    }
+                    BottomNavigationItem.Settings -> {
+                        SettingsScreenPreview()
+                    }
+                }
+            }
         }
     }
 }
@@ -37,16 +49,17 @@ fun AppNavPreview() {
 @Composable
 fun AppNavBar(navController: NavHostController) {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = currentBackStackEntry?.destination
+
     NavigationBar {
-        BOTTOM_NAVIGATION_DESTINATIONS.forEach { item ->
-            val isSelected = currentDestination?.hasRoute(item.destination::class) == true
+        BottomNavigationItem.entries.forEach { item ->
+            val isSelected = item.matchesNavDestination(currentBackStackEntry?.destination)
+
             NavigationBarItem(isSelected, {
                 if (isSelected) {
                     return@NavigationBarItem
                 }
 
-                navController.navigate(item.destination) {
+                navController.navigate(item.route) {
                     launchSingleTop = true
                     restoreState = true
                 }

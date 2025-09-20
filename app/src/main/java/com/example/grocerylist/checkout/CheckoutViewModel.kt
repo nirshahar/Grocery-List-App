@@ -15,6 +15,7 @@ class CheckoutViewModel : ViewModel() {
             val list = it.toMutableList()
 
             list.add(item)
+
             return@update list
         }
     }
