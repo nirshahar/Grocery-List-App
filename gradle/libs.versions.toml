@@ -27,6 +27,8 @@ androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-te
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+konfetti = { group = "nl.dionsegijn", name = "konfetti-compose", version = "2.0.5" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

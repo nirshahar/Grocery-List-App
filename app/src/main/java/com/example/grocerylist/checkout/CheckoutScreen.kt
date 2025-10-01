@@ -16,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.grocerylist.KonfettiPresets
+import nl.dionsegijn.konfetti.compose.KonfettiView
 
 @Composable
 fun CheckoutScreenHolder(
@@ -48,15 +50,20 @@ fun CheckoutScreen(
             val progress = if (items.isNotEmpty()) {
                 items.count { it.isChecked }.toFloat() / items.size.toFloat()
             } else {
-                1f
+                0f
             }
 
             CheckoutProgressCircular(progress)
             CheckoutItems(items, onItemCheck = onItemCheck)
         }
+
+        if (items.isNotEmpty() && items.all { it.isChecked }) {
+            KonfettiView(
+                parties = KonfettiPresets.festive()
+            )
+        }
     }
 }
-
 
 @Composable
 @Preview
