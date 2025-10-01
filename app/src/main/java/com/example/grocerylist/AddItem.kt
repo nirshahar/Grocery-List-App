@@ -13,14 +13,15 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -56,7 +57,7 @@ fun AddItemBottomSheetContent(onSubmit: (CheckoutItem) -> Unit) {
     var description by remember { mutableStateOf("") }
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        TextField(
+        OutlinedTextField(
             value = name,
             onValueChange = { name = it },
             label = { Text("Item name") },
@@ -67,7 +68,7 @@ fun AddItemBottomSheetContent(onSubmit: (CheckoutItem) -> Unit) {
 
         Spacer(modifier = Modifier.height(4.dp))
 
-        TextField(
+        OutlinedTextField(
             value = description,
             onValueChange = { newDescription ->
                 if (newDescription.lines().size <= 3) {
@@ -85,7 +86,7 @@ fun AddItemBottomSheetContent(onSubmit: (CheckoutItem) -> Unit) {
         Button(onClick = {
             onSubmit(CheckoutItem(name, description))
         }) {
-            Row {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.Done, contentDescription = null)
                 Text("Save")
             }
