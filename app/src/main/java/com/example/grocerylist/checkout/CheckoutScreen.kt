@@ -11,6 +11,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,7 +42,8 @@ fun CheckoutScreen(
 ) {
     Surface(modifier = modifier.fillMaxSize()) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             val progress = if (items.isNotEmpty()) {
                 items.count { it.isChecked }.toFloat() / items.size.toFloat()
@@ -49,7 +51,7 @@ fun CheckoutScreen(
                 1f
             }
 
-            CheckoutProgress(progress)
+            CheckoutProgressCircular(progress)
             CheckoutItems(items, onItemCheck = onItemCheck)
         }
     }
@@ -72,6 +74,6 @@ fun CheckoutScreenPreview() {
 @Composable
 fun CheckoutAddItemFab(onClick: () -> Unit) {
     FloatingActionButton(onClick = onClick) {
-        Icon(Icons.Filled.Add, "Add a new item")
+        Icon(Icons.Default.Add, "Add a new item")
     }
 }
