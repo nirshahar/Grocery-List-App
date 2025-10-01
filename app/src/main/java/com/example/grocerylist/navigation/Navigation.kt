@@ -20,7 +20,11 @@ import com.example.grocerylist.checkout.CheckoutViewModel
 import com.example.grocerylist.settings.SettingsScreenPreview
 
 @Composable
-fun AppNav(navController: NavHostController, modifier: Modifier = Modifier, checkoutViewModel: CheckoutViewModel = viewModel()) {
+fun AppNav(
+    navController: NavHostController,
+    modifier: Modifier = Modifier,
+    checkoutViewModel: CheckoutViewModel = viewModel()
+) {
     NavHost(
         navController = navController, startDestination = Route.Checkout, modifier = modifier
     ) {
@@ -30,6 +34,7 @@ fun AppNav(navController: NavHostController, modifier: Modifier = Modifier, chec
                     BottomNavigationItem.Checkout -> {
                         CheckoutScreenHolder(viewModel = checkoutViewModel)
                     }
+
                     BottomNavigationItem.Settings -> {
                         SettingsScreenPreview()
                     }

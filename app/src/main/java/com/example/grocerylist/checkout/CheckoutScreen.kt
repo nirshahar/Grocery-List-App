@@ -9,38 +9,35 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.fastCoerceIn
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun CheckoutScreenHolder(
-    modifier: Modifier = Modifier, viewModel: CheckoutViewModel = viewModel()
+    modifier: Modifier = Modifier,
+    viewModel: CheckoutViewModel = viewModel(),
 ) {
     val items by viewModel.items.collectAsState()
 
-    LaunchedEffect(viewModel) {
-        // TEMPORARY TODO
-        viewModel.addItem(CheckoutItem("Banana", "Yellowish ripe"))
-        viewModel.addItem(CheckoutItem("Chocolate", "Tnoova brand"))
-        viewModel.addItem(CheckoutItem("Meat", "Without skin"))
-    }
-
-    CheckoutScreen(items, modifier) { idx, item, isChecked ->
-        viewModel.checkItem(idx, isChecked)
-    }
+    CheckoutScreen(
+        items = items,
+        onItemCheck = { idx, item, isChecked ->
+            // TODO - use ID instead of idx
+            viewModel.checkItemByIdx(idx, isChecked)
+        },
+        modifier = modifier,
+    )
 }
 
 @Composable
 fun CheckoutScreen(
     items: List<CheckoutItem>,
+    onItemCheck: (Int, CheckoutItem, Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    onItemCheck: (Int, CheckoutItem, Boolean) -> Unit
 ) {
     Surface(modifier = modifier.fillMaxSize()) {
         Column(
@@ -50,7 +47,7 @@ fun CheckoutScreen(
                 items.count { it.isChecked }.toFloat() / items.size.toFloat()
             } else {
                 1f
-            }.fastCoerceIn(0f, 1f)
+            }
 
             CheckoutProgress(progress)
             CheckoutItems(items, onItemCheck = onItemCheck)
@@ -63,12 +60,13 @@ fun CheckoutScreen(
 @Preview
 fun CheckoutScreenPreview() {
     CheckoutScreen(
-        listOf(
+        items = listOf(
             CheckoutItem("Banana", "Yellowish ripe"),
             CheckoutItem("Chocolate", "Tnoova brand"),
             CheckoutItem("Meat", "Without skin"),
         ),
-    ) { _, _, _ -> }
+        onItemCheck =  { _, _, _ -> },
+    )
 }
 
 @Composable

@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -53,17 +54,22 @@ fun CheckoutRow(item: CheckoutItem, modifier: Modifier = Modifier, onCheck: (Boo
                 .padding(4.dp)
         ) {
             Checkbox(item.isChecked, onCheckedChange = null)
-            Column {
+            Column(
+                modifier = Modifier.defaultMinSize(minHeight = 32.dp),
+                verticalArrangement = Arrangement.Center
+            ) {
                 Text(
                     item.itemName,
                     textDecoration = if (item.isChecked) TextDecoration.LineThrough else TextDecoration.None,
                     style = MaterialTheme.typography.titleMedium
                 )
-                Text(
-                    item.subtext,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                if (item.description.isNotBlank()) {
+                    Text(
+                        item.description,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         }
     }
@@ -78,6 +84,9 @@ fun CheckoutRowPreview() {
         ) { }
         CheckoutRow(
             CheckoutItem("Banana", "Yellowish ripe", isChecked = true),
+        ) { }
+        CheckoutRow(
+            CheckoutItem("Banana", "", isChecked = true),
         ) { }
     }
 }
