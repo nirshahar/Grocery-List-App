@@ -11,8 +11,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.grocerylist.checkout.CheckoutAddItemFab
 import com.example.grocerylist.navigation.BottomNavigationItem
 
+typealias FabActionSetter = (() -> Unit) -> Unit
+
 @Composable
-fun AppFab(navController: NavHostController, checkoutFabClick: () -> Unit) {
+fun AppFab(navController: NavHostController, fabAction: () -> Unit) {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
 
     val currentDestination = BottomNavigationItem.entries.firstOrNull { item ->
@@ -22,7 +24,7 @@ fun AppFab(navController: NavHostController, checkoutFabClick: () -> Unit) {
     } ?: return
 
     AnimateFabVisibility(currentDestination == BottomNavigationItem.Checkout) {
-        CheckoutAddItemFab(onClick = checkoutFabClick)
+        CheckoutAddItemFab(onClick = fabAction)
     }
 }
 

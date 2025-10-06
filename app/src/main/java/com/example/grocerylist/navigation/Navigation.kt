@@ -1,5 +1,7 @@
 package com.example.grocerylist.navigation
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -9,21 +11,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.grocerylist.FabActionSetter
 import com.example.grocerylist.checkout.CheckoutScreenHolder
-import com.example.grocerylist.checkout.CheckoutViewModel
 import com.example.grocerylist.settings.SettingsScreenPreview
 
 @Composable
 fun AppNav(
     navController: NavHostController,
+    setFabAction: FabActionSetter,
     modifier: Modifier = Modifier,
-    checkoutViewModel: CheckoutViewModel = viewModel()
 ) {
     NavHost(
         navController = navController, startDestination = Route.Checkout, modifier = modifier
@@ -32,7 +33,7 @@ fun AppNav(
             composable(item.route::class) {
                 when (item) {
                     BottomNavigationItem.Checkout -> {
-                        CheckoutScreenHolder(viewModel = checkoutViewModel)
+                        CheckoutScreenHolder(setFabAction)
                     }
 
                     BottomNavigationItem.Settings -> {
@@ -48,9 +49,13 @@ fun AppNav(
 @Preview
 fun AppNavPreview() {
     val navController = rememberNavController()
-    AppNav(navController)
+    AppNav(
+        navController,
+        setFabAction = {},
+    )
 }
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AppNavBar(navController: NavHostController) {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
@@ -58,7 +63,6 @@ fun AppNavBar(navController: NavHostController) {
     NavigationBar {
         BottomNavigationItem.entries.forEach { item ->
             val isSelected = item.matchesNavDestination(currentBackStackEntry?.destination)
-
             NavigationBarItem(isSelected, {
                 if (isSelected) {
                     return@NavigationBarItem
