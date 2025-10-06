@@ -1,4 +1,4 @@
-package com.example.grocerylist.settings
+package com.example.grocerylist.screens.settings
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview

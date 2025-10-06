@@ -1,4 +1,4 @@
-package com.example.grocerylist.checkout
+package com.example.grocerylist.screens.checkout
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -59,7 +59,7 @@ fun CheckoutRow(item: CheckoutItem, modifier: Modifier = Modifier, onCheck: (Boo
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    item.itemName,
+                    item.name,
                     textDecoration = if (item.isChecked) TextDecoration.LineThrough else TextDecoration.None,
                     style = MaterialTheme.typography.titleMedium
                 )

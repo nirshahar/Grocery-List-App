@@ -17,8 +17,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.grocerylist.FabActionSetter
-import com.example.grocerylist.checkout.CheckoutScreenHolder
-import com.example.grocerylist.settings.SettingsScreenPreview
+import com.example.grocerylist.screens.checkout.CheckoutScreenHolder
+import com.example.grocerylist.screens.edit.EditScreenHolder
+import com.example.grocerylist.screens.settings.SettingsScreenPreview
 
 @Composable
 fun AppNav(
@@ -33,12 +34,17 @@ fun AppNav(
             composable(item.route::class) {
                 when (item) {
                     BottomNavigationItem.Checkout -> {
-                        CheckoutScreenHolder(setFabAction)
+                        CheckoutScreenHolder()
+                    }
+
+                    BottomNavigationItem.Edit -> {
+                        EditScreenHolder(setFabAction)
                     }
 
                     BottomNavigationItem.Settings -> {
                         SettingsScreenPreview()
                     }
+
                 }
             }
         }

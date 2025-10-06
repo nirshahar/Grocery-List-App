@@ -8,8 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.grocerylist.checkout.CheckoutAddItemFab
 import com.example.grocerylist.navigation.BottomNavigationItem
+import com.example.grocerylist.screens.edit.AddItemFab
 
 typealias FabActionSetter = (() -> Unit) -> Unit
 
@@ -23,8 +23,8 @@ fun AppFab(navController: NavHostController, fabAction: () -> Unit) {
         )
     } ?: return
 
-    AnimateFabVisibility(currentDestination == BottomNavigationItem.Checkout) {
-        CheckoutAddItemFab(onClick = fabAction)
+    AnimateFabVisibility(currentDestination == BottomNavigationItem.Edit) {
+        AddItemFab(onClick = fabAction)
     }
 }
 

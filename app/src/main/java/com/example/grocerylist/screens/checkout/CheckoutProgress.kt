@@ -1,4 +1,4 @@
-package com.example.grocerylist.checkout
+package com.example.grocerylist.screens.settings.checkout
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Arrangement
