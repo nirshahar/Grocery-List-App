@@ -16,13 +16,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.grocerylist.AddItemBottomSheet
-import com.example.grocerylist.FabActionSetter
+import com.example.grocerylist.fabs.SetFabAction
 import com.example.grocerylist.screens.checkout.CheckoutItem
 import com.example.grocerylist.screens.checkout.CheckoutRow
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun EditScreenHolder(setFabAction: FabActionSetter, modifier: Modifier = Modifier, viewModel: EditViewModel = koinViewModel()) {
+fun EditScreenHolder(setFabAction: SetFabAction, modifier: Modifier = Modifier, viewModel: EditViewModel = koinViewModel()) {
     val items by viewModel.items.collectAsState(emptyList())
 
     EditScreen(
@@ -35,7 +35,7 @@ fun EditScreenHolder(setFabAction: FabActionSetter, modifier: Modifier = Modifie
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditScreen(items: List<CheckoutItem>, setFabAction: FabActionSetter, onAddItem: (CheckoutItem) -> Unit, modifier: Modifier = Modifier) {
+fun EditScreen(items: List<CheckoutItem>, setFabAction: SetFabAction, onAddItem: (CheckoutItem) -> Unit, modifier: Modifier = Modifier) {
     var showAddItemBottomSheet by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState()
     val bottomSheetScope = rememberCoroutineScope()
