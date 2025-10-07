@@ -4,7 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -12,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.grocerylist.KonfettiPresets
+import com.example.grocerylist.Load
 import com.example.grocerylist.screens.settings.checkout.CheckoutProgressCircular
 import nl.dionsegijn.konfetti.compose.KonfettiView
 import org.koin.androidx.compose.koinViewModel
@@ -21,16 +24,25 @@ fun CheckoutScreenHolder(
     modifier: Modifier = Modifier,
     viewModel: CheckoutViewModel = koinViewModel(),
 ) {
-    val items by viewModel.items.collectAsState(emptyList())
+    val loadingItems by viewModel.items.collectAsState()
 
-    CheckoutScreen(
-        items = items,
-        onItemCheck = { idx, item, isChecked ->
-            // TODO - use ID instead of idx
-            viewModel.checkItemByIdx(idx, isChecked)
-        },
-        modifier = modifier,
-    )
+    LaunchedEffect(viewModel) {
+        viewModel.loadItems()
+    }
+
+    Load(
+        loadingItems,
+        loadingContent = { Text("Loading :)") },
+    ) { items ->
+        CheckoutScreen(
+            items = items,
+            onItemCheck = { idx, item, isChecked ->
+                // TODO - use ID instead of idx
+                viewModel.checkItemByIdx(idx, isChecked)
+            },
+            modifier = modifier,
+        )
+    }
 }
 
 @Composable
@@ -72,7 +84,7 @@ fun CheckoutScreenPreview() {
             CheckoutItem("Chocolate", "Tnoova brand"),
             CheckoutItem("Meat", "Without skin"),
         ),
-        onItemCheck =  { _, _, _ -> },
+        onItemCheck = { _, _, _ -> },
     )
 }
 

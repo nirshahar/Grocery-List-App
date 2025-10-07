@@ -26,7 +26,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MainContent()
+            GroceryListTheme {
+                MainContent()
+            }
         }
     }
 }
@@ -38,22 +40,20 @@ fun MainContent() {
 
     val (fabAction, setFabAction) = remember { mutableStateOf({}) }
 
-    GroceryListTheme {
-        Scaffold(
-            bottomBar = {
-                AppNavBar(navController)
-            },
-            floatingActionButton = {
-                AppFab(navController, fabAction = fabAction)
-            }
-        ) { innerPadding ->
-            AppNav(
-                navController = navController,
-                setFabAction,
-                modifier = Modifier
-                    .padding(8.dp)
-                    .padding(innerPadding)
-            )
+    Scaffold(
+        bottomBar = {
+            AppNavBar(navController)
+        },
+        floatingActionButton = {
+            AppFab(navController, fabAction = fabAction)
         }
+    ) { innerPadding ->
+        AppNav(
+            navController = navController,
+            setFabAction,
+            modifier = Modifier
+                .padding(8.dp)
+                .padding(innerPadding)
+        )
     }
 }

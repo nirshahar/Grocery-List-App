@@ -3,6 +3,7 @@ package com.example.grocerylist.screens.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.grocerylist.db.ItemsDao
+import com.example.grocerylist.loading
 import com.example.grocerylist.screens.checkout.CheckoutItem
 import com.example.grocerylist.screens.checkout.toEntity
 import com.example.grocerylist.screens.checkout.toUI
@@ -15,7 +16,7 @@ class EditViewModel(
 ): ViewModel() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val items = itemsRepository.getAllItems().mapLatest { currentItems -> currentItems.map { it.toUI() } }
+    val items = itemsRepository.getAllItemsFlow().mapLatest { currentItems -> currentItems.map { it.toUI() } }.loading(viewModelScope)
 
     fun addItem(item: CheckoutItem) {
         viewModelScope.launch {
