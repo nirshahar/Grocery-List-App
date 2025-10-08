@@ -37,7 +37,7 @@ fun AppNav(
         navController = navController, startDestination = Route.Main, modifier = modifier
     ) {
         composable<Route.Checkout> {
-            CheckoutScreenHolder()
+            CheckoutScreenHolder(navController)
         }
 
         navigation<Route.Main>(startDestination = Route.Main.Home) {
