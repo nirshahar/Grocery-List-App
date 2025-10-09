@@ -8,15 +8,21 @@ import com.example.grocerylist.screens.checkout.CheckoutItem
 import com.example.grocerylist.screens.checkout.toEntity
 import com.example.grocerylist.screens.checkout.toUI
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 class EditViewModel(
-    val itemsRepository: ItemsDao
-): ViewModel() {
+    private val itemsRepository: ItemsDao, val selectionStore: SelectionStore
+) : ViewModel() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val items = itemsRepository.getAllItemsFlow().mapLatest { currentItems -> currentItems.map { it.toUI() } }.loading(viewModelScope)
+    val items = itemsRepository.getAllItemsFlow()
+        .combine(selectionStore.selectedIds) { currentItems, selectedIds ->
+            currentItems.map { item ->
+                item.toUI(item.id in selectedIds)
+            }
+        }
+        .loading(viewModelScope)
 
     fun addItem(item: CheckoutItem) {
         viewModelScope.launch {
@@ -29,4 +35,9 @@ class EditViewModel(
             itemsRepository.delete(item.toEntity())
         }
     }
+
+    fun selectItem(id: Int, isSelected: Boolean) {
+        selectionStore.selectItem(id, isSelected)
+    }
+
 }

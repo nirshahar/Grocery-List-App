@@ -18,7 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.grocerylist.AddItemBottomSheet
 import com.example.grocerylist.Load
-import com.example.grocerylist.fabs.SetFabAction
+import com.example.grocerylist.LoadingState
+import com.example.grocerylist.SetFabAction
 import com.example.grocerylist.screens.checkout.CheckoutItem
 import com.example.grocerylist.screens.checkout.CheckoutRow
 import org.koin.androidx.compose.koinViewModel
@@ -31,25 +32,20 @@ fun EditScreenHolder(
 ) {
     val loadingItems by viewModel.items.collectAsState()
 
-    Load(
-        loadingItems,
-        loadingContent = {
-            Text("Loading :)")
-        }
-    ) { items ->
-        EditScreen(
-            items,
-            setFabAction = setFabAction,
-            onAddItem = viewModel::addItem,
-            modifier = modifier
-        )
-    }
+    EditScreen(
+        loadingItems = loadingItems,
+        selectItem = { idx, item, isSelected -> viewModel.selectItem(item.id, isSelected) },
+        setFabAction = setFabAction,
+        onAddItem = viewModel::addItem,
+        modifier = modifier
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditScreen(
-    items: List<CheckoutItem>,
+    loadingItems: LoadingState<List<CheckoutItem>>,
+    selectItem: (Int, CheckoutItem, Boolean) -> Unit,
     setFabAction: SetFabAction,
     onAddItem: (CheckoutItem) -> Unit,
     modifier: Modifier = Modifier
@@ -66,10 +62,11 @@ fun EditScreen(
 
     Surface(modifier = modifier.fillMaxSize()) {
         // TODO - put real content here instead of dummy `CheckoutRow` view
-        LazyColumn {
-            items(items.size) { idx ->
-                CheckoutRow(items[idx]) { }
-            }
+        Load(
+            loadingItems, loadingContent = {
+                Text("Loading :)")
+            }) { items ->
+            EditItems(items, selectItem = selectItem)
         }
     }
 
@@ -84,11 +81,45 @@ fun EditScreen(
 }
 
 @Composable
+fun EditItems(
+    items: List<CheckoutItem>,
+    selectItem: (Int, CheckoutItem, Boolean) -> Unit
+) {
+    LazyColumn {
+        items(items.size) { idx ->
+            CheckoutRow(items[idx]) {
+                selectItem(idx, items[idx], it)
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun EditItemsPreview() {
+    EditItems(
+        items = listOf(
+            CheckoutItem("Banana", "Yellowish ripe"),
+            CheckoutItem("Chocolate", "Tnoova brand"),
+            CheckoutItem("Meat", "Without skin"),
+        ),
+        { _, _, _ -> }
+    )
+}
+
+@Composable
 @Preview
 private fun EditScreenPreview() {
     EditScreen(
-        emptyList(),
-        {},
-        {}
+        loadingItems = LoadingState.Finished(
+            listOf(
+                CheckoutItem("Banana", "Yellowish ripe"),
+                CheckoutItem("Chocolate", "Tnoova brand"),
+                CheckoutItem("Meat", "Without skin"),
+            )
+        ),
+        setFabAction = {},
+        onAddItem = {},
+        selectItem = { _, _, _ -> },
     )
 }

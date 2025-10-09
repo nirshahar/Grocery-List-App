@@ -9,12 +9,12 @@ data class CheckoutItem(
     val id: Int = 0,
 )
 
-fun ItemEntity.toUI(): CheckoutItem =
+fun ItemEntity.toUI(isChecked: Boolean = false): CheckoutItem =
     CheckoutItem(
         id = id,
         name = name,
         description = description,
-        isChecked = false,
+        isChecked = isChecked,
     )
 
 fun CheckoutItem.toEntity(): ItemEntity =
