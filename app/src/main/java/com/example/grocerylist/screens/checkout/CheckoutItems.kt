@@ -1,6 +1,5 @@
 package com.example.grocerylist.screens.checkout
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,6 +7,7 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
@@ -48,7 +48,10 @@ fun CheckoutRow(item: CheckoutItem, modifier: Modifier = Modifier, onCheck: (Boo
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable(role = Role.Checkbox) {
+                .toggleable(
+                    value = item.isChecked,
+                    role = Role.Checkbox
+                ) {
                     onCheck(!item.isChecked)
                 }
                 .padding(4.dp)
