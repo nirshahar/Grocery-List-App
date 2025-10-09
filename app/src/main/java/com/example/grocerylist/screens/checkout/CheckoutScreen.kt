@@ -25,6 +25,7 @@ import com.example.grocerylist.KonfettiPresets
 import com.example.grocerylist.Load
 import com.example.grocerylist.LoadingState
 import com.example.grocerylist.screens.settings.checkout.CheckoutProgressCircular
+import com.example.grocerylist.ui.data.Product
 import nl.dionsegijn.konfetti.compose.KonfettiView
 import org.koin.androidx.compose.koinViewModel
 
@@ -53,8 +54,8 @@ fun CheckoutScreenHolder(
 
 @Composable
 fun CheckoutScreen(
-    loadingItems: LoadingState<List<CheckoutItem>>,
-    onItemCheck: (Int, CheckoutItem, Boolean) -> Unit,
+    loadingItems: LoadingState<List<Product>>,
+    onItemCheck: (Int, Product, Boolean) -> Unit,
     navController: NavController,
     modifier: Modifier = Modifier,
 ) {
@@ -74,7 +75,7 @@ fun CheckoutScreen(
                 }
 
                 CheckoutProgressCircular(progress)
-                CheckoutItems(items, onItemCheck = onItemCheck)
+                CheckoutProductRows(items, onItemCheck = onItemCheck)
             }
 
             // Show some nice confetti when completing the checkout list :)
@@ -136,9 +137,9 @@ fun CheckoutScreenPreview() {
     CheckoutScreen(
         loadingItems = LoadingState.Finished(
             listOf(
-                CheckoutItem("Banana", "Yellowish ripe"),
-                CheckoutItem("Chocolate", "Tnoova brand"),
-                CheckoutItem("Meat", "Without skin"),
+                Product("Banana", "Yellowish ripe"),
+                Product("Chocolate", "Tnoova brand"),
+                Product("Meat", "Without skin"),
             )
         ), onItemCheck = { _, _, _ -> }, navController = navController
     )

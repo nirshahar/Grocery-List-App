@@ -12,7 +12,10 @@ interface ItemsDao {
     suspend fun upsert(item: ItemEntity)
 
     @Delete
-    suspend fun delete(item: ItemEntity)
+    suspend fun delete(vararg items: ItemEntity)
+
+    @Delete
+    suspend fun delete(items: Iterable<ItemEntity>)
 
     @Query("SELECT * FROM items")
     fun getAllItemsFlow(): Flow<List<ItemEntity>>

@@ -25,7 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.grocerylist.screens.checkout.CheckoutItem
+import com.example.grocerylist.ui.data.Product
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -34,7 +34,7 @@ fun AddItemBottomSheet(
     scope: CoroutineScope,
     sheetState: SheetState,
     onDismiss: () -> Unit,
-    onSubmit: (CheckoutItem) -> Unit
+    onSubmit: (Product) -> Unit
 ) {
     ModalBottomSheet(onDismissRequest = onDismiss) {
         AddItemBottomSheetContent { item ->
@@ -52,7 +52,7 @@ fun AddItemBottomSheet(
 }
 
 @Composable
-fun AddItemBottomSheetContent(onSubmit: (CheckoutItem) -> Unit) {
+fun AddItemBottomSheetContent(onSubmit: (Product) -> Unit) {
     var name by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
 
@@ -84,7 +84,7 @@ fun AddItemBottomSheetContent(onSubmit: (CheckoutItem) -> Unit) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
-            onSubmit(CheckoutItem(name, description))
+            onSubmit(Product(name, description))
         }) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.Done, contentDescription = null)

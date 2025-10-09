@@ -19,18 +19,19 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.grocerylist.ui.data.Product
 
 @Composable
-fun CheckoutItems(
-    items: List<CheckoutItem>,
+fun CheckoutProductRows(
+    items: List<Product>,
     modifier: Modifier = Modifier,
-    onItemCheck: (idx: Int, item: CheckoutItem, isChecked: Boolean) -> Unit
+    onItemCheck: (idx: Int, item: Product, isChecked: Boolean) -> Unit
 ) {
     LazyColumn(
         modifier = modifier
     ) {
         items(items.size) { idx ->
-            CheckoutRow(items[idx]) { isChecked ->
+            CheckoutProductRow(items[idx]) { isChecked ->
                 onItemCheck(idx, items[idx], isChecked)
             }
         }
@@ -38,7 +39,7 @@ fun CheckoutItems(
 }
 
 @Composable
-fun CheckoutRow(item: CheckoutItem, modifier: Modifier = Modifier, onCheck: (Boolean) -> Unit) {
+fun CheckoutProductRow(item: Product, modifier: Modifier = Modifier, onCheck: (Boolean) -> Unit) {
     Card(
         modifier = modifier
             .padding(4.dp)
@@ -82,14 +83,14 @@ fun CheckoutRow(item: CheckoutItem, modifier: Modifier = Modifier, onCheck: (Boo
 @Preview(showBackground = true)
 fun CheckoutRowPreview() {
     Column {
-        CheckoutRow(
-            CheckoutItem("Banana", "Yellowish ripe"),
+        CheckoutProductRow(
+            Product("Banana", "Yellowish ripe"),
         ) { }
-        CheckoutRow(
-            CheckoutItem("Banana", "Yellowish ripe", isChecked = true),
+        CheckoutProductRow(
+            Product("Banana", "Yellowish ripe", isChecked = true),
         ) { }
-        CheckoutRow(
-            CheckoutItem("Banana", "", isChecked = true),
+        CheckoutProductRow(
+            Product("Banana", "", isChecked = true),
         ) { }
     }
 }

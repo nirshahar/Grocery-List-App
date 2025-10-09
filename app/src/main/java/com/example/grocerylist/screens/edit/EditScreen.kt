@@ -20,8 +20,8 @@ import com.example.grocerylist.AddItemBottomSheet
 import com.example.grocerylist.Load
 import com.example.grocerylist.LoadingState
 import com.example.grocerylist.SetFabAction
-import com.example.grocerylist.screens.checkout.CheckoutItem
-import com.example.grocerylist.screens.checkout.CheckoutRow
+import com.example.grocerylist.ui.data.Product
+import com.example.grocerylist.screens.checkout.CheckoutProductRow
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -44,10 +44,10 @@ fun EditScreenHolder(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditScreen(
-    loadingItems: LoadingState<List<CheckoutItem>>,
-    selectItem: (Int, CheckoutItem, Boolean) -> Unit,
+    loadingItems: LoadingState<List<Product>>,
+    selectItem: (Int, Product, Boolean) -> Unit,
     setFabAction: SetFabAction,
-    onAddItem: (CheckoutItem) -> Unit,
+    onAddItem: (Product) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var showAddItemBottomSheet by remember { mutableStateOf(false) }
@@ -82,12 +82,12 @@ fun EditScreen(
 
 @Composable
 fun EditItems(
-    items: List<CheckoutItem>,
-    selectItem: (Int, CheckoutItem, Boolean) -> Unit
+    items: List<Product>,
+    selectItem: (Int, Product, Boolean) -> Unit
 ) {
     LazyColumn {
         items(items.size) { idx ->
-            CheckoutRow(items[idx]) {
+            CheckoutProductRow(items[idx]) {
                 selectItem(idx, items[idx], it)
             }
         }
@@ -99,9 +99,9 @@ fun EditItems(
 private fun EditItemsPreview() {
     EditItems(
         items = listOf(
-            CheckoutItem("Banana", "Yellowish ripe"),
-            CheckoutItem("Chocolate", "Tnoova brand"),
-            CheckoutItem("Meat", "Without skin"),
+            Product("Banana", "Yellowish ripe"),
+            Product("Chocolate", "Tnoova brand"),
+            Product("Meat", "Without skin"),
         ),
         { _, _, _ -> }
     )
@@ -113,9 +113,9 @@ private fun EditScreenPreview() {
     EditScreen(
         loadingItems = LoadingState.Finished(
             listOf(
-                CheckoutItem("Banana", "Yellowish ripe"),
-                CheckoutItem("Chocolate", "Tnoova brand"),
-                CheckoutItem("Meat", "Without skin"),
+                Product("Banana", "Yellowish ripe"),
+                Product("Chocolate", "Tnoova brand"),
+                Product("Meat", "Without skin"),
             )
         ),
         setFabAction = {},

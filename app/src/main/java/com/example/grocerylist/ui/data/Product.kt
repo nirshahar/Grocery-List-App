@@ -1,23 +1,23 @@
-package com.example.grocerylist.screens.checkout
+package com.example.grocerylist.ui.data
 
 import com.example.grocerylist.db.ItemEntity
 
-data class CheckoutItem(
+data class Product(
     val name: String,
     val description: String,
     val isChecked: Boolean = false,
     val id: Int = 0,
 )
 
-fun ItemEntity.toUI(isChecked: Boolean = false): CheckoutItem =
-    CheckoutItem(
+fun ItemEntity.toUI(isChecked: Boolean = false): Product =
+    Product(
         id = id,
         name = name,
         description = description,
         isChecked = isChecked,
     )
 
-fun CheckoutItem.toEntity(): ItemEntity =
+fun Product.toEntity(): ItemEntity =
     ItemEntity(
         id = id,
         name = name,

@@ -4,35 +4,37 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.grocerylist.db.ItemsDao
 import com.example.grocerylist.loading
-import com.example.grocerylist.screens.checkout.CheckoutItem
-import com.example.grocerylist.screens.checkout.toEntity
-import com.example.grocerylist.screens.checkout.toUI
+import com.example.grocerylist.ui.SelectionStore
+import com.example.grocerylist.ui.data.Product
+import com.example.grocerylist.ui.data.toEntity
+import com.example.grocerylist.ui.data.toUI
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 class EditViewModel(
-    private val itemsRepository: ItemsDao, val selectionStore: SelectionStore
+    private val itemsRepository: ItemsDao,
+    val selectionStore: SelectionStore<Int> = SelectionStore()
 ) : ViewModel() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val items = itemsRepository.getAllItemsFlow()
-        .combine(selectionStore.selectedIds) { currentItems, selectedIds ->
+        .combine(selectionStore.selectedItems) { currentItems, selectedIds ->
             currentItems.map { item ->
                 item.toUI(item.id in selectedIds)
             }
         }
         .loading(viewModelScope)
 
-    fun addItem(item: CheckoutItem) {
+    fun addItem(item: Product) {
         viewModelScope.launch {
             itemsRepository.upsert(item.toEntity())
         }
     }
 
-    fun removeItem(item: CheckoutItem) {
+    fun removeItems(items: Iterable<Product>) {
         viewModelScope.launch {
-            itemsRepository.delete(item.toEntity())
+            itemsRepository.delete(items.map { it.toEntity() })
         }
     }
 

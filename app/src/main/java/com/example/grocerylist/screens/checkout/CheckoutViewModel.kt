@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import com.example.grocerylist.LoadingState
 import com.example.grocerylist.db.ItemsDao
 import com.example.grocerylist.reloadFromSupplier
+import com.example.grocerylist.ui.data.Product
+import com.example.grocerylist.ui.data.toUI
 import com.example.grocerylist.updateLoaded
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,9 +15,9 @@ import kotlinx.coroutines.flow.asStateFlow
 class CheckoutViewModel(
     val itemsRepository: ItemsDao
 ) : ViewModel() {
-    private val _items: MutableStateFlow<LoadingState<List<CheckoutItem>>> =
+    private val _items: MutableStateFlow<LoadingState<List<Product>>> =
         MutableStateFlow(LoadingState.Loading())
-    val items: StateFlow<LoadingState<List<CheckoutItem>>> = _items.asStateFlow()
+    val items: StateFlow<LoadingState<List<Product>>> = _items.asStateFlow()
 
     suspend fun loadItems() {
         _items.reloadFromSupplier {
