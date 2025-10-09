@@ -1,4 +1,4 @@
-package com.example.grocerylist.fabs
+package com.example.grocerylist
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope

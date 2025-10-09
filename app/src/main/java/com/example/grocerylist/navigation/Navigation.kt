@@ -21,7 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.example.grocerylist.fabs.SetFabAction
+import com.example.grocerylist.SetFabAction
 import com.example.grocerylist.screens.checkout.CheckoutScreenHolder
 import com.example.grocerylist.screens.edit.EditScreenHolder
 import com.example.grocerylist.screens.home.HomeScreenHolder
