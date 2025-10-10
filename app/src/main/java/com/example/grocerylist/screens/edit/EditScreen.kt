@@ -66,7 +66,7 @@ fun EditScreen(
             loadingItems, loadingContent = {
                 Text("Loading :)")
             }) { items ->
-            EditItems(items, selectItem = selectItem)
+            EditProductRows(items, selectItem = selectItem)
         }
     }
 
@@ -80,32 +80,6 @@ fun EditScreen(
     }
 }
 
-@Composable
-fun EditItems(
-    items: List<Product>,
-    selectItem: (Int, Product, Boolean) -> Unit
-) {
-    LazyColumn {
-        items(items.size) { idx ->
-            CheckoutProductRow(items[idx]) {
-                selectItem(idx, items[idx], it)
-            }
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun EditItemsPreview() {
-    EditItems(
-        items = listOf(
-            Product("Banana", "Yellowish ripe"),
-            Product("Chocolate", "Tnoova brand"),
-            Product("Meat", "Without skin"),
-        ),
-        { _, _, _ -> }
-    )
-}
 
 @Composable
 @Preview

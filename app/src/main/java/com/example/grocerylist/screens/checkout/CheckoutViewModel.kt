@@ -31,7 +31,7 @@ class CheckoutViewModel(
             val list = it.toMutableList()
 
             if (idx in list.indices) {
-                list[idx] = list[idx].copy(isChecked = isChecked)
+                list[idx] = list[idx].copy(isSelected = isChecked)
             }
 
             return@updateLoaded list

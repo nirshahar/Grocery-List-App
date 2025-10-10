@@ -5,7 +5,7 @@ import com.example.grocerylist.db.ItemEntity
 data class Product(
     val name: String,
     val description: String,
-    val isChecked: Boolean = false,
+    val isSelected: Boolean = false,
     val id: Int = 0,
 )
 
@@ -14,7 +14,7 @@ fun ItemEntity.toUI(isChecked: Boolean = false): Product =
         id = id,
         name = name,
         description = description,
-        isChecked = isChecked,
+        isSelected = isChecked,
     )
 
 fun Product.toEntity(): ItemEntity =

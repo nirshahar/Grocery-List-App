@@ -69,7 +69,7 @@ fun CheckoutScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 val progress = if (items.isNotEmpty()) {
-                    items.count { it.isChecked }.toFloat() / items.size.toFloat()
+                    items.count { it.isSelected }.toFloat() / items.size.toFloat()
                 } else {
                     0f
                 }
@@ -79,7 +79,7 @@ fun CheckoutScreen(
             }
 
             // Show some nice confetti when completing the checkout list :)
-            if (items.isNotEmpty() && items.all { it.isChecked }) {
+            if (items.isNotEmpty() && items.all { it.isSelected }) {
                 KonfettiView(
                     parties = KonfettiPresets.festive()
                 )
