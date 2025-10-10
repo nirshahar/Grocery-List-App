@@ -14,8 +14,8 @@ import kotlinx.coroutines.launch
 
 class EditViewModel(
     private val itemsRepository: ItemsDao,
-    val selectionStore: SelectionStore<Int> = SelectionStore()
 ) : ViewModel() {
+    val selectionStore: SelectionStore<Int> = SelectionStore()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val items = itemsRepository.getAllItemsFlow()
@@ -25,6 +25,10 @@ class EditViewModel(
             }
         }
         .loading(viewModelScope)
+
+    suspend fun swapItemsOrderSuspend(firstItem: Product, secondItem: Product) {
+        itemsRepository.swapItemsOrder(firstItem.id, secondItem.id)
+    }
 
     fun addItem(item: Product) {
         viewModelScope.launch {

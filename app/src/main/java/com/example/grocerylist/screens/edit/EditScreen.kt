@@ -1,7 +1,6 @@
 package com.example.grocerylist.screens.edit
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -21,7 +20,6 @@ import com.example.grocerylist.Load
 import com.example.grocerylist.LoadingState
 import com.example.grocerylist.SetFabAction
 import com.example.grocerylist.ui.data.Product
-import com.example.grocerylist.screens.checkout.CheckoutProductRow
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -37,6 +35,7 @@ fun EditScreenHolder(
         selectItem = { idx, item, isSelected -> viewModel.selectItem(item.id, isSelected) },
         setFabAction = setFabAction,
         onAddItem = viewModel::addItem,
+        swapItemsOrder = viewModel::swapItemsOrderSuspend,
         modifier = modifier
     )
 }
@@ -45,7 +44,8 @@ fun EditScreenHolder(
 @Composable
 fun EditScreen(
     loadingItems: LoadingState<List<Product>>,
-    selectItem: (Int, Product, Boolean) -> Unit,
+    selectItem: (idx: Int, item: Product, isSelected: Boolean) -> Unit,
+    swapItemsOrder: suspend (firstItem: Product, secondItem: Product) -> Unit,
     setFabAction: SetFabAction,
     onAddItem: (Product) -> Unit,
     modifier: Modifier = Modifier
@@ -66,7 +66,11 @@ fun EditScreen(
             loadingItems, loadingContent = {
                 Text("Loading :)")
             }) { items ->
-            EditProductRows(items, selectItem = selectItem)
+            EditProductRows(
+                items,
+                selectItem = selectItem,
+                swapItemsOrder = swapItemsOrder,
+            )
         }
     }
 
@@ -95,5 +99,6 @@ private fun EditScreenPreview() {
         setFabAction = {},
         onAddItem = {},
         selectItem = { _, _, _ -> },
+        swapItemsOrder = { _, _ -> },
     )
 }

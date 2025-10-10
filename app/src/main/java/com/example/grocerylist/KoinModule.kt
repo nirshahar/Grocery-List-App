@@ -13,14 +13,13 @@ val appKoinModule = module {
     // DB
     single<AppDatabase> {
         Room.databaseBuilder(
-            androidApplication(),
-            AppDatabase::class.java,
-            AppDatabase.DB_NAME
+            androidApplication(), AppDatabase::class.java, AppDatabase.DB_NAME
         ).build()
     }
     single<ItemsDao> { get<AppDatabase>().itemsDao() }
 
     // View Models
+    viewModelOf(::MainActivityViewModel)
     viewModelOf(::CheckoutViewModel)
     viewModelOf(::EditViewModel)
 }
