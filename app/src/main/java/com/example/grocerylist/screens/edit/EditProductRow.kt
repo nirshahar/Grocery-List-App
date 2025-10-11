@@ -1,6 +1,6 @@
 package com.example.grocerylist.screens.edit
 
-import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,13 +15,11 @@ import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DragHandle
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -69,34 +67,45 @@ fun EditProductRows(
     }
 }
 
+fun Modifier.applySelectionListener(
+    isSelectionActive: Boolean,
+    isSelected: Boolean,
+    onSelect: (Boolean) -> Unit,
+): Modifier {
+    return if (isSelectionActive) {
+        toggleable(value = isSelected, role = Role.Checkbox) {
+            onSelect(!isSelected)
+        }
+    } else {
+        combinedClickable(
+            onClick = {}, // Required to be non-empty even though it doesn't do anything
+            onLongClick = {
+                onSelect(true)
+            }
+        )
+    }
+}
+
 @Composable
 fun ReorderableCollectionItemScope.EditProductRow(
     item: Product,
     isSelectionActive: Boolean,
-    isDragging: Boolean,
+    isDragging: Boolean, // TODO - use in some cool animation?
     onSelect: (Boolean) -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     val hapticFeedback = LocalHapticFeedback.current
 
     val isSelectionActive = isSelectionActive || item.isSelected
-    val elevation by animateDpAsState(if (isDragging) 4.dp else 0.dp)
 
-
-    Card(
-        elevation = CardDefaults.cardElevation(elevation), modifier = modifier.padding(4.dp)
-    ) {
+    Card {
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .toggleable(
-                    value = item.isSelected, role = Role.Checkbox
-                ) {
-                    onSelect(!item.isSelected)
-                }
-                .padding(4.dp)) {
+                .applySelectionListener(isSelectionActive, item.isSelected, onSelect)
+                .padding(4.dp)
+        ) {
 
             if (isSelectionActive) {
                 Checkbox(item.isSelected, onCheckedChange = null)
@@ -139,9 +148,9 @@ fun ReorderableCollectionItemScope.EditProductRow(
 private fun EditProductRowsUnselectedPreview() {
     EditProductRows(
         items = listOf(
-            Product("Banana", "Yellowish ripe"),
-            Product("Chocolate", "Tnoova brand"),
-            Product("Meat", ""),
+            Product("Banana", "Yellowish ripe", id = 0),
+            Product("Chocolate", "Tnoova brand", id = 1),
+            Product("Meat", "", id = 2),
         ),
         selectItem = { _, _, _ -> },
         swapItemsOrder = { _, _ -> },
@@ -153,9 +162,9 @@ private fun EditProductRowsUnselectedPreview() {
 private fun EditProductRowsSelectedPreview() {
     EditProductRows(
         items = listOf(
-            Product("Banana", "Yellowish ripe"),
-            Product("Chocolate", "Tnoova brand", isSelected = true),
-            Product("Meat", "", isSelected = true),
+            Product("Banana", "Yellowish ripe", id = 0),
+            Product("Chocolate", "Tnoova brand", id = 1, isSelected = true),
+            Product("Meat", "", id = 2, isSelected = true),
         ),
         selectItem = { _, _, _ -> },
         swapItemsOrder = { _, _ -> },
