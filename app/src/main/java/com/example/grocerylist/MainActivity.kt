@@ -58,7 +58,7 @@ fun MainContent() {
             AppNavBar(navController)
         },
         topBar = {
-            giveanameforthis(navController)
+            MyTopAppBar(navController)
         },
         floatingActionButton = {
             AppFab(navController, fabAction = fabAction)

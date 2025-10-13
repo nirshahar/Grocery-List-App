@@ -5,7 +5,6 @@ package com.example.grocerylist
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -33,7 +32,7 @@ import com.example.grocerylist.ui.data.Product
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun giveanameforthis(navController: NavHostController, modifier: Modifier = Modifier) {
+fun MyTopAppBar(navController: NavHostController, modifier: Modifier = Modifier) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     val currentScreen = navBackStackEntry?.destination?.getCurrentScreen() ?: return
