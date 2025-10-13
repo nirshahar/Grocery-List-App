@@ -25,20 +25,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.grocerylist.screens.edit.EditItemBottomSheetData
 import com.example.grocerylist.ui.data.Product
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
 fun AddItemBottomSheet(
-    itemData: Product,
+    data: EditItemBottomSheetData.Shown,
     scope: CoroutineScope,
     sheetState: SheetState,
     onDismiss: () -> Unit,
     onSubmit: (Product) -> Unit
 ) {
     ModalBottomSheet(onDismissRequest = onDismiss) {
-        AddItemBottomSheetContent(itemData) { item ->
+        AddItemBottomSheetContent(data.item) { item ->
             onSubmit(item)
 
             scope.launch {

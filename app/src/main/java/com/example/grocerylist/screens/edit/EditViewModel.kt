@@ -29,7 +29,7 @@ class EditViewModel(
         }
         .loading(viewModelScope)
 
-    var editItemBottomSheetData: Product? by mutableStateOf(null)
+    var editItemBottomSheetData: EditItemBottomSheetData by mutableStateOf(EditItemBottomSheetData.Hidden)
     var deleteDialogData: DeleteDialogData by mutableStateOf(DeleteDialogData.Hidden)
 
     suspend fun swapItemsOrderSuspend(firstItem: Product, secondItem: Product) {
@@ -52,12 +52,12 @@ class EditViewModel(
         selectionStore.selectItem(id, isSelected)
     }
 
-    fun showEditItemBottomSheet(item: Product? = null) {
-        editItemBottomSheetData = item ?: Product("", "")
+    fun showEditItemBottomSheet(item: Product =  Product("", "")) {
+        editItemBottomSheetData = EditItemBottomSheetData.Shown(item)
     }
 
     fun dismissEditItemBottomSheet() {
-        editItemBottomSheetData = null
+        editItemBottomSheetData = EditItemBottomSheetData.Hidden
     }
 
     fun unselectAllItems() {

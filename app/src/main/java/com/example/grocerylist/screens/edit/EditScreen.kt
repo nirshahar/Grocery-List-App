@@ -41,7 +41,7 @@ fun EditScreenHolder(
 
     EditScreen(
         loadingItems = loadingItems,
-        addItemBottomSheetState = addItemBottomSheetData,
+        editItemBottomSheetState = addItemBottomSheetData,
         deleteDialogData = deleteDialogData,
         selectItem = { idx, item, isSelected -> viewModel.selectItem(item.id, isSelected) },
         onDismissDeleteDialog = viewModel::dismissDeleteDialog,
@@ -60,7 +60,7 @@ fun EditScreenHolder(
 @Composable
 fun EditScreen(
     loadingItems: LoadingState<List<Product>>,
-    addItemBottomSheetState: Product?,
+    editItemBottomSheetState: EditItemBottomSheetData,
     deleteDialogData: DeleteDialogData,
     selectItem: (idx: Int, item: Product, isSelected: Boolean) -> Unit,
     swapItemsOrder: suspend (firstItem: Product, secondItem: Product) -> Unit,
@@ -87,9 +87,9 @@ fun EditScreen(
         }
     }
 
-    if (addItemBottomSheetState != null) {
+    if (editItemBottomSheetState is EditItemBottomSheetData.Shown) {
         AddItemBottomSheet(
-            itemData = addItemBottomSheetState,
+            data = editItemBottomSheetState,
             scope = bottomSheetScope,
             sheetState = sheetState,
             onDismiss = onDismissBottomSheet,
@@ -104,11 +104,6 @@ fun EditScreen(
             onConfirm = onConfirmDeleteDialog,
         )
     }
-}
-
-sealed interface DeleteDialogData {
-    object Hidden : DeleteDialogData
-    data class Shown(val items: List<Product>) : DeleteDialogData
 }
 
 @Composable
@@ -147,7 +142,7 @@ private fun EditScreenPreview() {
                 Product("Meat", "Without skin"),
             )
         ),
-        addItemBottomSheetState = null,
+        editItemBottomSheetState = EditItemBottomSheetData.Hidden,
         deleteDialogData = DeleteDialogData.Hidden,
         onAddItem = {},
         selectItem = { _, _, _ -> },
