@@ -1,15 +1,16 @@
 package com.example.grocerylist.navigation
 
+import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -27,6 +28,28 @@ import com.example.grocerylist.screens.edit.EditScreenHolder
 import com.example.grocerylist.screens.home.HomeScreenHolder
 import com.example.grocerylist.screens.settings.SettingsScreenHolder
 
+val LocalNavAnimatedScope = compositionLocalOf<AnimatedContentScope> { error("Not in nav scope") }
+
+
+inline fun NavGraphBuilder.appComposable(
+    route: Route,
+    noinline content: @Composable AnimatedContentScope.() -> Unit,
+) {
+    composable(route::class) {
+        CompositionLocalProvider(LocalNavAnimatedScope provides this) {
+            content()
+        }
+    }
+}
+
+inline fun <reified T : Any> NavGraphBuilder.appComposable(noinline content: @Composable AnimatedContentScope.() -> Unit) {
+    composable<T> {
+        CompositionLocalProvider(LocalNavAnimatedScope provides this) {
+            content()
+        }
+    }
+}
+
 @Composable
 fun AppNav(
     navController: NavHostController,
@@ -34,9 +57,11 @@ fun AppNav(
     modifier: Modifier = Modifier,
 ) {
     NavHost(
-        navController = navController, startDestination = Route.Main, modifier = modifier
+        navController = navController,
+        startDestination = Route.Main,
+        modifier = modifier,
     ) {
-        composable<Route.Checkout> {
+        appComposable<Route.Checkout> {
             CheckoutScreenHolder(navController)
         }
 
@@ -51,7 +76,7 @@ fun NavGraphBuilder.buildMainNavigation(
     setFabAction: SetFabAction,
 ) {
     BottomNavigationItem.entries.forEach { item ->
-        composable(item.route::class) {
+        appComposable(item.route) {
             when (item) {
                 BottomNavigationItem.Home -> {
                     HomeScreenHolder(navController, setFabAction)
@@ -79,7 +104,6 @@ fun AppNavPreview() {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AppNavBar(navController: NavHostController) {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()

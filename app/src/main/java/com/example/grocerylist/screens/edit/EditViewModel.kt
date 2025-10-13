@@ -46,4 +46,7 @@ class EditViewModel(
         selectionStore.selectItem(id, isSelected)
     }
 
+    fun requestEditItem(item: Product) {
+        TODO()
+    }
 }

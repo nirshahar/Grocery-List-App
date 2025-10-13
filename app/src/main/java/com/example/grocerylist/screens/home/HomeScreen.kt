@@ -13,27 +13,35 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavHostController
 import com.example.grocerylist.SetFabAction
 import com.example.grocerylist.navigation.Route
 
 @Composable
-fun HomeScreenHolder(navController: NavController, setFabAction: SetFabAction, modifier: Modifier = Modifier) {
-    // TODO - add viewmodel, fab, etc...
-    HomeScreen(navController = navController, setFabAction = setFabAction, modifier = modifier)
-}
-
-@Composable
-fun HomeScreen(navController: NavController, setFabAction: SetFabAction, modifier: Modifier = Modifier) {
+fun HomeScreenHolder(
+    navController: NavHostController,
+    setFabAction: SetFabAction,
+    modifier: Modifier = Modifier
+) {
     LaunchedEffect(true) {
         setFabAction {
             navController.navigate(Route.Checkout)
         }
     }
 
+    // TODO - add viewmodel, fab, etc...
+    HomeScreen(
+        modifier = modifier
+    )
+}
+
+@Composable
+fun HomeScreen(
+    modifier: Modifier = Modifier
+) {
     Surface(modifier = modifier.fillMaxSize()) {
-        LazyVerticalGrid(GridCells.Fixed(2),
+        LazyVerticalGrid(
+            GridCells.Fixed(2),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
@@ -50,9 +58,5 @@ fun HomeScreen(navController: NavController, setFabAction: SetFabAction, modifie
 @Preview
 @Composable
 private fun HomeScreenPreview() {
-    val navController = rememberNavController()
-    HomeScreen(
-        navController,
-        setFabAction = {},
-    )
+    HomeScreen()
 }

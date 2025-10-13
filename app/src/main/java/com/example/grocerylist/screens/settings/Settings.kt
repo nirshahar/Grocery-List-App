@@ -7,7 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun SettingsScreenHolder(modifier: Modifier = Modifier) {
+fun SettingsScreenHolder(
+    modifier: Modifier = Modifier) {
     // TODO - add viewmodel, etc...
     SettingsScreen(modifier = modifier)
 }

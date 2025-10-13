@@ -7,7 +7,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -15,6 +14,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.grocerylist.AddItemBottomSheet
 import com.example.grocerylist.Load
 import com.example.grocerylist.LoadingState
@@ -28,37 +28,41 @@ fun EditScreenHolder(
     modifier: Modifier = Modifier,
     viewModel: EditViewModel = koinViewModel()
 ) {
-    val loadingItems by viewModel.items.collectAsState()
-
-    EditScreen(
-        loadingItems = loadingItems,
-        selectItem = { idx, item, isSelected -> viewModel.selectItem(item.id, isSelected) },
-        setFabAction = setFabAction,
-        onAddItem = viewModel::addItem,
-        swapItemsOrder = viewModel::swapItemsOrderSuspend,
-        modifier = modifier
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun EditScreen(
-    loadingItems: LoadingState<List<Product>>,
-    selectItem: (idx: Int, item: Product, isSelected: Boolean) -> Unit,
-    swapItemsOrder: suspend (firstItem: Product, secondItem: Product) -> Unit,
-    setFabAction: SetFabAction,
-    onAddItem: (Product) -> Unit,
-    modifier: Modifier = Modifier
-) {
+    val loadingItems by viewModel.items.collectAsStateWithLifecycle()
     var showAddItemBottomSheet by remember { mutableStateOf(false) }
-    val sheetState = rememberModalBottomSheetState()
-    val bottomSheetScope = rememberCoroutineScope()
 
     LaunchedEffect(true) {
         setFabAction {
             showAddItemBottomSheet = true
         }
     }
+
+    EditScreen(
+        loadingItems = loadingItems,
+        showAddItemBottomSheet = showAddItemBottomSheet,
+        selectItem = { idx, item, isSelected -> viewModel.selectItem(item.id, isSelected) },
+        onDismissBottomSheet = { showAddItemBottomSheet = false },
+        onAddItem = viewModel::addItem,
+        swapItemsOrder = viewModel::swapItemsOrderSuspend,
+        modifier = modifier
+    )
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun EditScreen(
+    loadingItems: LoadingState<List<Product>>,
+    showAddItemBottomSheet: Boolean,
+    selectItem: (idx: Int, item: Product, isSelected: Boolean) -> Unit,
+    swapItemsOrder: suspend (firstItem: Product, secondItem: Product) -> Unit,
+    onDismissBottomSheet: () -> Unit,
+    onAddItem: (Product) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val sheetState = rememberModalBottomSheetState()
+    val bottomSheetScope = rememberCoroutineScope()
+
 
     Surface(modifier = modifier.fillMaxSize()) {
         // TODO - put real content here instead of dummy `CheckoutRow` view
@@ -78,7 +82,7 @@ fun EditScreen(
         AddItemBottomSheet(
             scope = bottomSheetScope,
             sheetState = sheetState,
-            onDismiss = { showAddItemBottomSheet = false },
+            onDismiss = onDismissBottomSheet,
             onSubmit = onAddItem
         )
     }
@@ -96,9 +100,10 @@ private fun EditScreenPreview() {
                 Product("Meat", "Without skin"),
             )
         ),
-        setFabAction = {},
+        showAddItemBottomSheet = false,
         onAddItem = {},
         selectItem = { _, _, _ -> },
         swapItemsOrder = { _, _ -> },
+        onDismissBottomSheet = {},
     )
 }

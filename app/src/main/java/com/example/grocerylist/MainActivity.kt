@@ -6,11 +6,15 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -39,6 +43,9 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+val LocalSharedElementScope =
+    compositionLocalOf<SharedTransitionScope> { error("Not in shared element scope") }
+
 @Composable
 @Preview
 fun MainContent() {
@@ -50,16 +57,23 @@ fun MainContent() {
         bottomBar = {
             AppNavBar(navController)
         },
+        topBar = {
+            giveanameforthis(navController)
+        },
         floatingActionButton = {
             AppFab(navController, fabAction = fabAction)
         }
     ) { innerPadding ->
-        AppNav(
-            navController = navController,
-            setFabAction,
-            modifier = Modifier
-                .padding(8.dp)
-                .padding(innerPadding)
-        )
+        SharedTransitionLayout {
+            CompositionLocalProvider(LocalSharedElementScope provides this) {
+                AppNav(
+                    navController = navController,
+                    setFabAction,
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .padding(innerPadding)
+                )
+            }
+        }
     }
 }

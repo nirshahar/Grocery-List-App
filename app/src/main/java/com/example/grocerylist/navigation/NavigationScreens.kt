@@ -13,26 +13,41 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import kotlinx.serialization.Serializable
 
+
+
+@Serializable
+sealed interface Screen : Route
 @Serializable
 sealed interface Route {
 
     @Serializable
     object Main : Route {
         @Serializable
-        object Home : Route
+        object Home : Screen
 
         @Serializable
-        object Edit : Route
+        object Edit : Screen
 
         @Serializable
-        object Settings : Route
+        object Settings : Screen
     }
 
     @Serializable
-    object Checkout : Route
+    object Checkout : Screen
 
     fun matchesNavDestination(navDestination: NavDestination?): Boolean =
         navDestination?.hierarchy?.any { it.hasRoute(this::class) } ?: false
+}
+
+val SCREENS = listOf<Screen>(
+    Route.Main.Home,
+    Route.Main.Edit,
+    Route.Main.Settings,
+    Route.Checkout
+)
+
+fun NavDestination.getCurrentScreen(): Screen? {
+    return SCREENS.firstOrNull { it.matchesNavDestination(this) }
 }
 
 enum class BottomNavigationItem(
