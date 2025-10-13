@@ -8,14 +8,11 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.grocerylist.AddItemBottomSheet
+import com.example.grocerylist.bottomSheet.AddItemBottomSheet
 import com.example.grocerylist.Load
 import com.example.grocerylist.LoadingState
 import com.example.grocerylist.SetFabAction
@@ -29,31 +26,30 @@ fun EditScreenHolder(
     viewModel: EditViewModel = koinViewModel()
 ) {
     val loadingItems by viewModel.items.collectAsStateWithLifecycle()
-    var showAddItemBottomSheet by remember { mutableStateOf(false) }
+    val addItemBottomSheetState = viewModel.editItemBottomSheetData
 
     LaunchedEffect(true) {
         setFabAction {
-            showAddItemBottomSheet = true
+            viewModel.showEditItemBottomSheet()
         }
     }
 
     EditScreen(
         loadingItems = loadingItems,
-        showAddItemBottomSheet = showAddItemBottomSheet,
+        addItemBottomSheetState = addItemBottomSheetState,
         selectItem = { idx, item, isSelected -> viewModel.selectItem(item.id, isSelected) },
-        onDismissBottomSheet = { showAddItemBottomSheet = false },
+        onDismissBottomSheet = { viewModel.dismissEditItemBottomSheet() },
         onAddItem = viewModel::addItem,
         swapItemsOrder = viewModel::swapItemsOrderSuspend,
         modifier = modifier
     )
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditScreen(
     loadingItems: LoadingState<List<Product>>,
-    showAddItemBottomSheet: Boolean,
+    addItemBottomSheetState: Product?,
     selectItem: (idx: Int, item: Product, isSelected: Boolean) -> Unit,
     swapItemsOrder: suspend (firstItem: Product, secondItem: Product) -> Unit,
     onDismissBottomSheet: () -> Unit,
@@ -78,8 +74,9 @@ fun EditScreen(
         }
     }
 
-    if (showAddItemBottomSheet) {
+    if (addItemBottomSheetState != null) {
         AddItemBottomSheet(
+            itemData = addItemBottomSheetState,
             scope = bottomSheetScope,
             sheetState = sheetState,
             onDismiss = onDismissBottomSheet,
@@ -100,7 +97,7 @@ private fun EditScreenPreview() {
                 Product("Meat", "Without skin"),
             )
         ),
-        showAddItemBottomSheet = false,
+        addItemBottomSheetState = null,
         onAddItem = {},
         selectItem = { _, _, _ -> },
         swapItemsOrder = { _, _ -> },

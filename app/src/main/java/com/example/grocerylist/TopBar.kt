@@ -92,7 +92,10 @@ fun EditTopBarActionsHolder(viewModel: EditViewModel = koinViewModel()) {
         EditTopBarActions(
             selectedItems,
             onDeleteClick = viewModel::removeItems,
-            onEditClick = viewModel::requestEditItem
+            onEditClick = { item ->
+                viewModel.unselectAllItems()
+                viewModel.showEditItemBottomSheet(item)
+            }
         )
     }
 }

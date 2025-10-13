@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.example.grocerylist
+package com.example.grocerylist.bottomSheet
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,13 +31,14 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun AddItemBottomSheet(
+    itemData: Product,
     scope: CoroutineScope,
     sheetState: SheetState,
     onDismiss: () -> Unit,
     onSubmit: (Product) -> Unit
 ) {
     ModalBottomSheet(onDismissRequest = onDismiss) {
-        AddItemBottomSheetContent { item ->
+        AddItemBottomSheetContent(itemData) { item ->
             onSubmit(item)
 
             scope.launch {
@@ -52,9 +53,9 @@ fun AddItemBottomSheet(
 }
 
 @Composable
-fun AddItemBottomSheetContent(onSubmit: (Product) -> Unit) {
-    var name by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
+fun AddItemBottomSheetContent(itemData: Product, onSubmit: (Product) -> Unit) {
+    var name by remember(itemData) { mutableStateOf(itemData.name) }
+    var description by remember(itemData) { mutableStateOf(itemData.description) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         OutlinedTextField(
@@ -84,7 +85,7 @@ fun AddItemBottomSheetContent(onSubmit: (Product) -> Unit) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
-            onSubmit(Product(name, description))
+            onSubmit(itemData.copy(name = name, description = description))
         }) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.Done, contentDescription = null)
@@ -97,5 +98,5 @@ fun AddItemBottomSheetContent(onSubmit: (Product) -> Unit) {
 @Preview(showBackground = true)
 @Composable
 private fun AddItemBottomSheetContentPreview() {
-    AddItemBottomSheetContent {}
+    AddItemBottomSheetContent(Product("", "")) {}
 }

@@ -18,4 +18,8 @@ class SelectionStore<T> {
             }
         }
     }
+
+    fun unselectAll() {
+        _selectedItems.update { emptySet() }
+    }
 }

@@ -1,5 +1,8 @@
 package com.example.grocerylist.screens.edit
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.grocerylist.db.ItemsDao
@@ -26,6 +29,8 @@ class EditViewModel(
         }
         .loading(viewModelScope)
 
+    var editItemBottomSheetData: Product? by mutableStateOf(null)
+
     suspend fun swapItemsOrderSuspend(firstItem: Product, secondItem: Product) {
         itemsRepository.swapItemsOrder(firstItem.id, secondItem.id)
     }
@@ -46,7 +51,15 @@ class EditViewModel(
         selectionStore.selectItem(id, isSelected)
     }
 
-    fun requestEditItem(item: Product) {
-        TODO()
+    fun showEditItemBottomSheet(item: Product? = null) {
+        editItemBottomSheetData = item ?: Product("", "")
+    }
+
+    fun dismissEditItemBottomSheet() {
+        editItemBottomSheetData = null
+    }
+
+    fun unselectAllItems() {
+        selectionStore.unselectAll()
     }
 }

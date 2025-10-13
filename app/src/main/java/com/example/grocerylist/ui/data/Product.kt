@@ -6,18 +6,20 @@ data class Product(
     val name: String,
     val description: String,
     val isSelected: Boolean = false,
+    val order: Int = 0,
     val id: Int = 0,
 )
 
-fun ItemEntity.toUI(isChecked: Boolean = false): Product =
+fun ItemEntity.toUI(isSelected: Boolean = false): Product =
     Product(
         id = id,
         name = name,
         description = description,
-        isSelected = isChecked,
+        order = order,
+        isSelected = isSelected,
     )
 
-fun Product.toEntity(order: Int = 0): ItemEntity =
+fun Product.toEntity(): ItemEntity =
     ItemEntity(
         id = id,
         order = order,
