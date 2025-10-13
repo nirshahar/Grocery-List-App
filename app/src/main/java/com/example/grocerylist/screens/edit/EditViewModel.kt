@@ -30,6 +30,7 @@ class EditViewModel(
         .loading(viewModelScope)
 
     var editItemBottomSheetData: Product? by mutableStateOf(null)
+    var deleteDialogData: DeleteDialogData by mutableStateOf(DeleteDialogData.Hidden)
 
     suspend fun swapItemsOrderSuspend(firstItem: Product, secondItem: Product) {
         itemsRepository.swapItemsOrder(firstItem.id, secondItem.id)
@@ -61,5 +62,13 @@ class EditViewModel(
 
     fun unselectAllItems() {
         selectionStore.unselectAll()
+    }
+
+    fun showDeleteDialog(itemsToDelete: List<Product>) {
+        deleteDialogData = DeleteDialogData.Shown(itemsToDelete)
+    }
+
+    fun dismissDeleteDialog() {
+        deleteDialogData = DeleteDialogData.Hidden
     }
 }
