@@ -21,8 +21,7 @@ class CheckoutViewModel(
 
     suspend fun loadItems() {
         _items.reloadFromSupplier {
-                delay(3_000) // TODO - for testing purposes only, remove after proper loading animation is added
-                itemsRepository.getAllItemsSuspend().map { it.toUI() }
+            itemsRepository.getAllItemsSuspend().map { it.toUI() }
         }
     }
 
