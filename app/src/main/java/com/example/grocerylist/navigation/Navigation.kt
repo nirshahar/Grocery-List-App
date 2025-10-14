@@ -127,6 +127,7 @@ fun AppNavBar(navController: NavHostController) {
                     navController.navigate(item.route) {
                         launchSingleTop = true
                         restoreState = true
+                        popUpTo(Route.Main)
                     }
                 }, icon = {
                     Icon(

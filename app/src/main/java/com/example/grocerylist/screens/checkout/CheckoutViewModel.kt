@@ -7,7 +7,6 @@ import com.example.grocerylist.reloadFromSupplier
 import com.example.grocerylist.ui.data.Product
 import com.example.grocerylist.ui.data.toUI
 import com.example.grocerylist.updateLoaded
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
