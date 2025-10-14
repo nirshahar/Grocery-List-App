@@ -25,8 +25,12 @@ import com.example.grocerylist.R
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun CheckoutProgress(progress: Float, modifier: Modifier = Modifier) {
-    val progress = progress.fastCoerceIn(0f, 1f)
+fun CheckoutProgress(selectedItemsCount: Int, totalItemsCount: Int, modifier: Modifier = Modifier) {
+    val progress = if (totalItemsCount > 0) {
+        selectedItemsCount.toFloat() / totalItemsCount.toFloat()
+    } else {
+        0f
+    }.fastCoerceIn(0f, 1f)
 
     val animatedProgress by animateFloatAsState(
         targetValue = progress,
@@ -37,11 +41,19 @@ fun CheckoutProgress(progress: Float, modifier: Modifier = Modifier) {
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        Text(
-            stringResource(R.string.progress_bar),
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                stringResource(R.string.progress_bar),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Text(
+                "$selectedItemsCount / $totalItemsCount",
+                style = MaterialTheme.typography.labelSmallEmphasized
+            )
+        }
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -65,8 +77,16 @@ fun CheckoutProgress(progress: Float, modifier: Modifier = Modifier) {
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun CheckoutProgressCircular(progress: Float, modifier: Modifier = Modifier) {
-    val progress = progress.fastCoerceIn(0f, 1f)
+fun CheckoutProgressCircular(
+    selectedItemsCount: Int,
+    totalItemsCount: Int,
+    modifier: Modifier = Modifier
+) {
+    val progress = if (totalItemsCount > 0) {
+        selectedItemsCount.toFloat() / totalItemsCount.toFloat()
+    } else {
+        0f
+    }.fastCoerceIn(0f, 1f)
 
     val animatedProgress by animateFloatAsState(
         targetValue = progress,
@@ -84,14 +104,16 @@ fun CheckoutProgressCircular(progress: Float, modifier: Modifier = Modifier) {
         )
 
         Column {
+            Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(
+                    stringResource(R.string.progress_bar),
+                    style = MaterialTheme.typography.labelMediumEmphasized,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
             Text(
-                stringResource(R.string.progress_bar),
-                style = MaterialTheme.typography.labelMediumEmphasized,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Text(
-                "${(progress * 100).toInt()}%",
-                style = MaterialTheme.typography.bodyLarge,
+                stringResource(R.string.progress_bar_count, selectedItemsCount, totalItemsCount),
+                style = MaterialTheme.typography.bodyLargeEmphasized,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -102,7 +124,7 @@ fun CheckoutProgressCircular(progress: Float, modifier: Modifier = Modifier) {
 @Composable
 private fun CheckoutProgressPreview() {
     Column {
-        CheckoutProgress(0.5f)
-        CheckoutProgressCircular(0.5f)
+        CheckoutProgress(5, 10)
+        CheckoutProgressCircular(5, 10)
     }
 }

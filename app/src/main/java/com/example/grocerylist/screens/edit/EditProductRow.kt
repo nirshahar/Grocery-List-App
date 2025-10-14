@@ -1,5 +1,6 @@
 package com.example.grocerylist.screens.edit
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,18 +9,20 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DragHandle
-import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -97,7 +100,10 @@ fun ReorderableCollectionItemScope.EditProductRow(
 
     val isSelectionActive = isSelectionActive || item.isSelected
 
-    Card {
+    val animatedShadowElevation by animateDpAsState(targetValue = if (isDragging) 5.dp else 0.dp)
+
+//    Card {
+    Surface(shadowElevation = animatedShadowElevation) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -108,19 +114,25 @@ fun ReorderableCollectionItemScope.EditProductRow(
         ) {
 
             if (isSelectionActive) {
-                Checkbox(item.isSelected, onCheckedChange = null)
+                Checkbox(
+                    item.isSelected,
+                    modifier = Modifier.size(32.dp),
+                    onCheckedChange = null
+                )
             } else {
                 Icon(
                     Icons.Default.DragHandle,
                     contentDescription = "Reorder",
-                    modifier = Modifier.draggableHandle(
-                        onDragStarted = {
-                            hapticFeedback.performHapticFeedback(HapticFeedbackType.GestureThresholdActivate)
-                        },
-                        onDragStopped = {
-                            hapticFeedback.performHapticFeedback(HapticFeedbackType.GestureEnd)
-                        },
-                    )
+                    modifier = Modifier
+                        .size(32.dp)
+                        .draggableHandle(
+                            onDragStarted = {
+                                hapticFeedback.performHapticFeedback(HapticFeedbackType.GestureThresholdActivate)
+                            },
+                            onDragStopped = {
+                                hapticFeedback.performHapticFeedback(HapticFeedbackType.GestureEnd)
+                            },
+                        )
                 )
             }
 

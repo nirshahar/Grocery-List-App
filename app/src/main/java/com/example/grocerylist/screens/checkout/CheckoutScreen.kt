@@ -70,13 +70,10 @@ fun CheckoutScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                val progress = if (items.isNotEmpty()) {
-                    items.count { it.isSelected }.toFloat() / items.size.toFloat()
-                } else {
-                    0f
-                }
 
-                CheckoutProgressCircular(progress)
+                val selectedItems = items.count { it.isSelected }
+                val totalItems = items.size
+                CheckoutProgressCircular(selectedItems, totalItems)
                 CheckoutProductRows(items, onItemCheck = onItemCheck)
             }
 

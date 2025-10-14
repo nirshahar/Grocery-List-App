@@ -6,10 +6,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -41,9 +41,6 @@ fun CheckoutProductRows(
 
 @Composable
 fun CheckoutProductRow(item: Product, modifier: Modifier = Modifier, onCheck: (Boolean) -> Unit) {
-    Card(
-        modifier = modifier.padding(4.dp)
-    ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -54,8 +51,12 @@ fun CheckoutProductRow(item: Product, modifier: Modifier = Modifier, onCheck: (B
                 ) {
                     onCheck(!item.isSelected)
                 }
-                .padding(4.dp)) {
-            Checkbox(item.isSelected, onCheckedChange = null)
+                .padding(8.dp)) {
+            Checkbox(
+                item.isSelected,
+                onCheckedChange = null,
+                modifier = Modifier.size(32.dp),
+            )
             Column(
                 modifier = Modifier.defaultMinSize(minHeight = 32.dp),
                 verticalArrangement = Arrangement.Center
@@ -68,13 +69,13 @@ fun CheckoutProductRow(item: Product, modifier: Modifier = Modifier, onCheck: (B
                 if (item.description.isNotBlank()) {
                     Text(
                         item.description,
+                        textDecoration = if (item.isSelected) TextDecoration.LineThrough else TextDecoration.None,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
         }
-    }
 }
 
 @Composable
