@@ -40,7 +40,7 @@ fun CheckoutProductRows(
 }
 
 @Composable
-fun CheckoutProductRow(item: Product, modifier: Modifier = Modifier, onCheck: (Boolean) -> Unit) {
+fun CheckoutProductRow(item: Product, onCheck: (Boolean) -> Unit) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
