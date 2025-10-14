@@ -23,8 +23,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.grocerylist.R
 import com.example.grocerylist.screens.edit.EditItemBottomSheetData
 import com.example.grocerylist.ui.data.Product
 import kotlinx.coroutines.CoroutineScope
@@ -62,8 +64,8 @@ fun AddItemBottomSheetContent(itemData: Product, onSubmit: (Product) -> Unit) {
         OutlinedTextField(
             value = name,
             onValueChange = { name = it },
-            label = { Text("Item name") },
-            placeholder = { Text("Banana") },
+            label = { Text(stringResource(R.string.add_item_name_label)) },
+            placeholder = { Text(stringResource(R.string.add_item_name_placeholder)) },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
@@ -77,8 +79,8 @@ fun AddItemBottomSheetContent(itemData: Product, onSubmit: (Product) -> Unit) {
                     description = newDescription
                 }
             },
-            label = { Text("Optional Description") },
-            placeholder = { Text("Ripe with black dots") },
+            label = { Text(stringResource(R.string.add_item_description_label)) },
+            placeholder = { Text(stringResource(R.string.add_item_description_placeholder)) },
             maxLines = 3,
             modifier = Modifier.fillMaxWidth()
         )
@@ -90,7 +92,7 @@ fun AddItemBottomSheetContent(itemData: Product, onSubmit: (Product) -> Unit) {
         }) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.Done, contentDescription = null)
-                Text("Save")
+                Text(stringResource(R.string.add_item_save_button))
             }
         }
     }

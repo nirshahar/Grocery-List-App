@@ -14,10 +14,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.grocerylist.Load
 import com.example.grocerylist.LoadingState
+import com.example.grocerylist.R
 import com.example.grocerylist.SetFabAction
 import com.example.grocerylist.bottomSheet.AddItemBottomSheet
 import com.example.grocerylist.ui.data.Product
@@ -118,16 +120,16 @@ fun EditScreenDeleteDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(onClick = { onConfirm(data.items) }) {
-                Text("Delete")
+                Text(stringResource(R.string.delete_product_dialog_delete_button))
             }
         },
         dismissButton = {
             TextButton(onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.delete_product_dialog_cancel_button))
             }
         },
-        title = { Text("Delete") },
-        text = { Text("Are you sure you want to delete $itemsCount items?") },
+        title = { Text(stringResource(R.string.delete_product_dialog_title)) },
+        text = { Text(stringResource(R.string.delete_product_dialog_content, itemsCount)) },
     )
 }
 

@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">Grocery List</string>
+    <string name="checkout_title">Checkout</string>
+    <string name="edit_title">Edit</string>
+    <string name="home_title">Home</string>
+    <string name="settings_title">Settings</string>
+    <string name="add_item_name_placeholder">Banana</string>
+    <string name="add_item_name_label">Item name</string>
+    <string name="add_item_description_label">Optional Description</string>
+    <string name="add_item_description_placeholder">Ripe with black dots</string>
+    <string name="add_item_save_button">Save</string>
+    <string name="bottomnav_home_label">Home</string>
+    <string name="bottomnav_groceries_label">Groceries</string>
+    <string name="bottomnav_settings_label">Settings</string>
+    <string name="progress_bar">Progress</string>
+    <string name="exit_checkout_dialog_leave_button">Leave</string>
+    <string name="exit_checkout_dialog_cancel_button">Cancel</string>
+    <string name="exit_checkout_dialog_title">Leave checkout?</string>
+    <string name="exit_checkout_dialog_content">Changes you made will not be saved.</string>
+    <string name="delete_product_dialog_delete_button">Delete</string>
+    <string name="delete_product_dialog_cancel_button">Cancel</string>
+    <string name="delete_product_dialog_title">Delete</string>
+    <string name="delete_product_dialog_content">Are you sure you want to delete %1$d items?</string>
 </resources>

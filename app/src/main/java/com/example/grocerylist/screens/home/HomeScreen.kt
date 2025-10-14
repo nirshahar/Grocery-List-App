@@ -47,7 +47,7 @@ fun HomeScreen(
         ) {
             items(4) {
                 Card(modifier = Modifier.size(200.dp)) {
-                    Text("Example Blueprint $it")
+//                    Text("Example Blueprint $it")
                 }
             }
         }

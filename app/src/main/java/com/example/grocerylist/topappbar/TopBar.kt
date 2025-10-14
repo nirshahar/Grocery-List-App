@@ -9,9 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.grocerylist.R
 import com.example.grocerylist.navigation.Route
 import com.example.grocerylist.navigation.Screen
 import com.example.grocerylist.navigation.getCurrentScreen
@@ -34,10 +36,10 @@ fun MyTopAppBar(navController: NavHostController, modifier: Modifier = Modifier)
         CenterAlignedTopAppBar(
             title = {
                 val text = when (currentScreen) {
-                    Route.Checkout -> "Checkout"
-                    Route.Main.Edit -> "Edit"
-                    Route.Main.Home -> "Home"
-                    Route.Main.Settings -> "Settings"
+                    Route.Checkout -> stringResource(R.string.checkout_title)
+                    Route.Main.Edit -> stringResource(R.string.edit_title)
+                    Route.Main.Home -> stringResource(R.string.home_title)
+                    Route.Main.Settings -> stringResource(R.string.settings_title)
                 }
 
                 Text(text)

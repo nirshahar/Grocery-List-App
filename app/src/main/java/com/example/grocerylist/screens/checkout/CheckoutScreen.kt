@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -24,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.grocerylist.KonfettiPresets
 import com.example.grocerylist.Load
 import com.example.grocerylist.LoadingState
+import com.example.grocerylist.R
 import com.example.grocerylist.screens.settings.checkout.CheckoutProgressCircular
 import com.example.grocerylist.ui.data.Product
 import nl.dionsegijn.konfetti.compose.KonfettiView
@@ -117,16 +119,16 @@ fun CheckoutScreenExitDialog(onDismiss: () -> Unit, onConfirm: () -> Unit) {
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(onClick = onConfirm) {
-                Text("Leave")
+                Text(stringResource(R.string.exit_checkout_dialog_leave_button))
             }
         },
         dismissButton = {
             TextButton(onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.exit_checkout_dialog_cancel_button))
             }
         },
-        title = { Text("Leave checkout?") },
-        text = { Text("Changes you made will not be saved.") },
+        title = { Text(stringResource(R.string.exit_checkout_dialog_title)) },
+        text = { Text(stringResource(R.string.exit_checkout_dialog_content)) },
     )
 }
 

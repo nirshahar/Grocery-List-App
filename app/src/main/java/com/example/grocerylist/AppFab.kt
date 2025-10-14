@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -80,7 +81,7 @@ private fun AppFabPreview() {
     Row(horizontalArrangement = Arrangement.spacedBy(32.dp)) {
         BottomNavigationItem.entries.forEach {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(it.label)
+                Text(stringResource( it.label))
                 AppFabContent(fabAction = {}, currentDestination = it)
             }
         }

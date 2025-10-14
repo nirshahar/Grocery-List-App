@@ -15,10 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastCoerceIn
+import com.example.grocerylist.R
 
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -36,7 +38,7 @@ fun CheckoutProgress(progress: Float, modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Text(
-            "Progress",
+            stringResource(R.string.progress_bar),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -83,7 +85,7 @@ fun CheckoutProgressCircular(progress: Float, modifier: Modifier = Modifier) {
 
         Column {
             Text(
-                "Progress",
+                stringResource(R.string.progress_bar),
                 style = MaterialTheme.typography.labelMediumEmphasized,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

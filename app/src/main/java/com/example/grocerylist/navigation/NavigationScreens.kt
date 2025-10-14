@@ -1,5 +1,6 @@
 package com.example.grocerylist.navigation
 
+import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
@@ -11,6 +12,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
+import com.example.grocerylist.R
 import kotlinx.serialization.Serializable
 
 
@@ -54,27 +56,27 @@ enum class BottomNavigationItem(
     val route: Route,
     val unselectedIcon: ImageVector,
     val selectedIcon: ImageVector,
-    val label: String = "",
+    @param:StringRes val label: Int,
 ) {
     Home(
         Route.Main.Home,
         Icons.Outlined.Home,
         Icons.Filled.Home,
-        "Home"
+        R.string.bottomnav_home_label
     ),
 
     Edit(
         Route.Main.Edit,
         Icons.Outlined.Edit,
         Icons.Filled.Edit,
-        "Groceries"
+        R.string.bottomnav_groceries_label
     ),
 
     Settings(
         Route.Main.Settings,
         Icons.Outlined.Settings,
         Icons.Filled.Settings,
-        "Settings"
+        R.string.bottomnav_settings_label
     );
 
     fun matchesNavDestination(navDestination: NavDestination?): Boolean =

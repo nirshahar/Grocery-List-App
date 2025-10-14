@@ -13,6 +13,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavGraphBuilder
@@ -133,12 +134,10 @@ fun AppNavBar(navController: NavHostController) {
                         contentDescription = "Bottom navigation icon"
                     )
                 }, label = {
-                    if (item.label.isNotBlank()) {
-                        Text(
-                            item.label,
-                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
-                        )
-                    }
+                    Text(
+                        stringResource(item.label),
+                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                    )
                 })
             }
         }
